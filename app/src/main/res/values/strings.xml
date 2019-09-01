@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">Lost It? Found It!</string>
+
+    <!-- Those are suggestions for text views that give the right information -->
+    <string name="email_suggestion">Email</string>
+    <string name="pass_suggestion">Password</string>
+
+    <!-- Button Names -->
+    <string name="sign_in">Sign In</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="register">Register</string>
+    <string name="logout">Logout</string>
+    <string name="contact">Contact</string>
+
+    <!-- Other Useful Strings -->
+
+
+    <string name="type_email_here">Type email here...</string>
+
+    <string name="type_password_here">Type password here...</string>
+
+
+    <string name="no_account_click_here_to_register">No Account? Click Here to Register.</string>
+
+    <string name="already_have_an_account_sign_in_here">Already Have an Account? Sign In Here.</string>
+    <string name="type_in_your_email_address_that_you_use_for_signing_in_you_will_be_emailed_a_recovery_link_where_you_can_change_your_password">Type in your email address that you use for signing in. You will be emailed a recovery link where you can change your password.</string>
+    <string name="map">Map</string>
+    <string name="item_list">Item List</string>
+    <string name="profile">Profile</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="ongoing_searches">Ongoing Searches</string>
+    <string name="the_icon_of_the_app">The icon of the app.</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="searches_around_me">Searches Around Me</string>
+    <string name="upload">Upload</string>
+    <string name="username_not_set">Username not set.</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="phone_number_not_set">Phone number not set.</string>
+    <string name="lost_item_name">Lost Item Name</string>
+    <string name="add_to_search_list">Add To Search List</string>
+    <string name="time_it_was_lost">Time It Was Lost</string>
+    <string name="where_it_was_lost">Where It Was Lost</string>
+    <string name="short_description">Short Description</string>
+</resources>

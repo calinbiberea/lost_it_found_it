@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "203230429142",
+    "firebase_url": "https://lost-it-found-it-2019.firebaseio.com",
+    "project_id": "lost-it-found-it-2019",
+    "storage_bucket": "lost-it-found-it-2019.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:203230429142:android:f5eeae282fce6c4e",
+        "android_client_info": {
+          "package_name": "com.example.lostitfoundit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "203230429142-9ho7v5hqjb3p3e88v5qqmgpi2smm9iru.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lostitfoundit",
+            "certificate_hash": "ea9312a13f4fa88fbbe3cce3eafd5eeee754fcd0"
+          }
+        },
+        {
+          "client_id": "203230429142-mk2ic4sd6rhbqpcvbm2v87tq8b6dhor9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkdVSYJOVtCi6_WXffJG6iAAnkvJpACYw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "203230429142-mk2ic4sd6rhbqpcvbm2v87tq8b6dhor9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
