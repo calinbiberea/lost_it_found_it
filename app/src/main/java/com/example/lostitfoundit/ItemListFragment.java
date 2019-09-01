@@ -37,10 +37,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.rtchagas.pingplacepicker.PingPlacePicker;
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -91,7 +91,6 @@ public class ItemListFragment extends Fragment {
         mPullToRefresh = view.findViewById(R.id.pullToRefresh);
         mAddItemButton = view.findViewById(R.id.add_item);
         initialiseViews();
-
 
         RecyclerView recyclerView;
         initImageBitmaps();
@@ -182,29 +181,50 @@ public class ItemListFragment extends Fragment {
         addItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String itemName = addItemName.getText().toString();
-                final String itemTime = addItemTime.getText().toString();
-                final String itemDescription = addItemDescription.getText().toString();
-                final String itemAddress = addItemAddress.getText().toString();
+                final Item item = new Item();
+                item.itemName = addItemName.getText().toString();
+                item.itemTime = addItemTime.getText().toString();
+                item.itemDescription = addItemDescription.getText().toString();
+                item.itemAddress = "";
 
                 boolean canUpload = true;
-                if (TextUtils.isEmpty(itemName)) {
+                if (TextUtils.isEmpty(item.itemName)) {
                     canUpload = false;
                     addItemName.setError("An item name is required.");
                 }
-                if (TextUtils.isEmpty(itemTime)) {
+                if (TextUtils.isEmpty(item.itemTime)) {
                     canUpload = false;
                     addItemTime.setError("The time it was lost is required.");
                 }
-                if (TextUtils.isEmpty(itemDescription)) {
+                if (TextUtils.isEmpty(item.itemDescription)) {
                     canUpload = false;
                     addItemDescription.setError("An item description is required.");
                 }
-                if (TextUtils.isEmpty(itemAddress)) {
+                /*
+                 if (TextUtils.isEmpty(item.itemAddress)) {
                     canUpload = false;
                     addItemAddress.setError("The address it was lost around is required.");
                 }
+                */
                 if (canUpload) {
+                    mDatabase.child("items").child(mUser.getUid() + "" + item.itemName)
+                            .setValue(item).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                String taskResultText;
+
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        taskResultText = "Uploaded the item details.";
+                                    } else {
+                                        taskResultText = "Failed to upload the item details.";
+                                    }
+                                    final Toast taskResult = Toast.makeText(getContext(),
+                                            taskResultText
+                                            , Toast.LENGTH_SHORT);
+                                    taskResult.setGravity(Gravity.CENTER, 0, 0);
+                                    taskResult.show();
+                                }
+                            });
                 }
 
             }
@@ -282,22 +302,60 @@ public class ItemListFragment extends Fragment {
         try {
             Intent placeIntent = builder.build(getActivity());
             startActivityForResult(placeIntent, REQUEST_PLACE_PICKER);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             // Google Play services is not available...
         }
     }
 
     private void initImageBitmaps() {
-        mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
-        mNames.add("Havasu Falls");
 
-        mImageUrls.add("https://i.redd.it/tpsnoz5bzo501.jpg");
-        mNames.add("Trondheim");
     }
 
     private void refreshData() {
         Toast.makeText(getActivity(), "THIS IS A REFRESH", Toast.LENGTH_SHORT).show();
+    }
+
+    public static class Item {
+        String itemName;
+        String itemTime;
+        String itemDescription;
+        String itemAddress;
+
+        Item() {
+            // Generic constructor required by Firebase Database;
+        }
+
+        public String getItemName() {
+            return itemName;
+        }
+
+        public void setItemName(String itemName) {
+            this.itemName = itemName;
+        }
+
+        public String getItemTime() {
+            return itemTime;
+        }
+
+        public void setItemTime(String itemTime) {
+            this.itemTime = itemTime;
+        }
+
+        public String getItemDescription() {
+            return itemDescription;
+        }
+
+        public void setItemDescription(String itemDescription) {
+            this.itemDescription = itemDescription;
+        }
+
+        public String getItemAddress() {
+            return itemAddress;
+        }
+
+        public void setItemAddress(String itemAddress) {
+            this.itemAddress = itemAddress;
+        }
     }
 
 }
