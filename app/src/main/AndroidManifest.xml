@@ -21,7 +21,7 @@
         <activity android:name=".ContactMeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
+                android:value=".homeactivity.HomeActivity" />
         </activity>
         <activity android:name=".ForgotPasswordActivity" />
         <activity android:name=".LoadingActivity">
@@ -33,7 +33,7 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeActivity" />
+        <activity android:name=".homeactivity.HomeActivity" />
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity" />
 

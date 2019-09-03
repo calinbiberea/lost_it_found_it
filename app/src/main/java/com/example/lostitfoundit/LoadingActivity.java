@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.lostitfoundit.homeactivity.HomeActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
 import static com.example.lostitfoundit.Utils.SPLASH_TIME_OUT;

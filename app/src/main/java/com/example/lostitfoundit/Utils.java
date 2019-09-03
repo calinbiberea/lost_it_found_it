@@ -4,16 +4,16 @@ import android.text.TextUtils;
 import android.util.Patterns;
 import android.widget.EditText;
 
-class Utils {
+public class Utils {
 
     /* Some Global Variables that are used for processing data */
     private static final int PASS_LENGTH = 6;
-    static final int SPLASH_TIME_OUT = 1000;
-    static final int ERROR_DIALOG_REQUEST = 9001;
-    static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9002;
-    static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9003;
-    static final int REQUEST_IMAGE_CAPTURE = 1001;
-    static final int REQUEST_PLACE_PICKER = 1002;
+    public static final int SPLASH_TIME_OUT = 1000;
+    public static final int ERROR_DIALOG_REQUEST = 9001;
+    public static final int PERMISSIONS_REQUEST_ENABLE_GPS = 9002;
+    public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 9003;
+    public static final int REQUEST_IMAGE_CAPTURE = 1001;
+    public static final int REQUEST_PLACE_PICKER = 1002;
 
     static boolean checkRecoverdEmail(EditText email) {
         boolean valid = true;

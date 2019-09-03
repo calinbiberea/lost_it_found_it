@@ -1,4 +1,4 @@
-package com.example.lostitfoundit;
+package com.example.lostitfoundit.homeactivity;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -14,15 +14,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.lostitfoundit.BuildConfig;
+import com.example.lostitfoundit.R;
+import com.example.lostitfoundit.models.Item;
+import com.example.lostitfoundit.viewholder.ItemViewHolder;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,6 +39,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -39,8 +47,6 @@ import com.rtchagas.pingplacepicker.PingPlacePicker;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -67,9 +73,9 @@ public class ItemListFragment extends Fragment {
     private TextView addItemAddress;
     private byte[] uploadResult = null;
 
-    private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
 
+    /* Useful Views */
+    private RecyclerView recyclerView;
     private SwipeRefreshLayout mPullToRefresh;
     private FloatingActionButton mAddItemButton;
 
@@ -92,15 +98,48 @@ public class ItemListFragment extends Fragment {
         mAddItemButton = view.findViewById(R.id.add_item);
         initialiseViews();
 
-        RecyclerView recyclerView;
-        initImageBitmaps();
-
+        /* Create a recycler view */
         recyclerView = view.findViewById(R.id.item_list_view);
-        ItemRecyclerViewAdapter adapter = new ItemRecyclerViewAdapter(getContext(),
-                mNames, mImageUrls);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        initialiseRecyclerView();
+
         return view;
+    }
+
+    private void initialiseRecyclerView() {
+
+        Query query = FirebaseDatabase.getInstance()
+                .getReference()
+                .child("items")
+                .limitToLast(50);
+
+        FirebaseRecyclerOptions<Item> recyclerOptions = new FirebaseRecyclerOptions.Builder<Item>()
+                .setQuery(query, Item.class)
+                .build();
+
+        FirebaseRecyclerAdapter<Item, ItemViewHolder> recyclerAdapter = new FirebaseRecyclerAdapter<Item, ItemViewHolder>(recyclerOptions) {
+            @Override
+            protected void onBindViewHolder(@NonNull ItemViewHolder itemViewHolder, int i, @NonNull Item item) {
+
+                itemViewHolder.lostItemName.setText(item.getItemName());
+                itemViewHolder.lostItemTime.setText(item.getItemTime());
+
+            }
+
+            @NonNull
+            @Override
+            public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_container, parent, false);
+
+                return new ItemViewHolder(view);
+            }
+        };
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 1);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerAdapter.startListening();
+        recyclerView.setAdapter(recyclerAdapter);
+
     }
 
     @Override
@@ -182,21 +221,21 @@ public class ItemListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 final Item item = new Item();
-                item.itemName = addItemName.getText().toString();
-                item.itemTime = addItemTime.getText().toString();
-                item.itemDescription = addItemDescription.getText().toString();
-                item.itemAddress = "";
+                item.setItemName(addItemName.getText().toString());
+                item.setItemTime(addItemTime.getText().toString());
+                item.setItemDescription(addItemDescription.getText().toString());
+                item.setItemAddress("");
 
                 boolean canUpload = true;
-                if (TextUtils.isEmpty(item.itemName)) {
+                if (TextUtils.isEmpty(item.getItemName())) {
                     canUpload = false;
                     addItemName.setError("An item name is required.");
                 }
-                if (TextUtils.isEmpty(item.itemTime)) {
+                if (TextUtils.isEmpty(item.getItemTime())) {
                     canUpload = false;
                     addItemTime.setError("The time it was lost is required.");
                 }
-                if (TextUtils.isEmpty(item.itemDescription)) {
+                if (TextUtils.isEmpty(item.getItemDescription())) {
                     canUpload = false;
                     addItemDescription.setError("An item description is required.");
                 }
@@ -207,24 +246,24 @@ public class ItemListFragment extends Fragment {
                 }
                 */
                 if (canUpload) {
-                    mDatabase.child("items").child(mUser.getUid() + "" + item.itemName)
+                    mDatabase.child("items").child(mUser.getUid() + "" + item.getItemName().hashCode())
                             .setValue(item).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                String taskResultText;
+                        String taskResultText;
 
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        taskResultText = "Uploaded the item details.";
-                                    } else {
-                                        taskResultText = "Failed to upload the item details.";
-                                    }
-                                    final Toast taskResult = Toast.makeText(getContext(),
-                                            taskResultText
-                                            , Toast.LENGTH_SHORT);
-                                    taskResult.setGravity(Gravity.CENTER, 0, 0);
-                                    taskResult.show();
-                                }
-                            });
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                taskResultText = "Uploaded the item details.";
+                            } else {
+                                taskResultText = "Failed to upload the item details.";
+                            }
+                            final Toast taskResult = Toast.makeText(getContext(),
+                                    taskResultText
+                                    , Toast.LENGTH_SHORT);
+                            taskResult.setGravity(Gravity.CENTER, 0, 0);
+                            taskResult.show();
+                        }
+                    });
                 }
 
             }
@@ -313,49 +352,6 @@ public class ItemListFragment extends Fragment {
 
     private void refreshData() {
         Toast.makeText(getActivity(), "THIS IS A REFRESH", Toast.LENGTH_SHORT).show();
-    }
-
-    public static class Item {
-        String itemName;
-        String itemTime;
-        String itemDescription;
-        String itemAddress;
-
-        Item() {
-            // Generic constructor required by Firebase Database;
-        }
-
-        public String getItemName() {
-            return itemName;
-        }
-
-        public void setItemName(String itemName) {
-            this.itemName = itemName;
-        }
-
-        public String getItemTime() {
-            return itemTime;
-        }
-
-        public void setItemTime(String itemTime) {
-            this.itemTime = itemTime;
-        }
-
-        public String getItemDescription() {
-            return itemDescription;
-        }
-
-        public void setItemDescription(String itemDescription) {
-            this.itemDescription = itemDescription;
-        }
-
-        public String getItemAddress() {
-            return itemAddress;
-        }
-
-        public void setItemAddress(String itemAddress) {
-            this.itemAddress = itemAddress;
-        }
     }
 
 }

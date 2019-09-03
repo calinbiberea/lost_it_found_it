@@ -1,4 +1,4 @@
-package com.example.lostitfoundit;
+package com.example.lostitfoundit.homeactivity;
 
 
 import android.Manifest;
@@ -22,6 +22,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.lostitfoundit.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;

@@ -43,6 +43,9 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    // Firebase Database and UI
+    implementation 'com.firebaseui:firebase-ui-database:5.1.0'
+
     // Circular Image View and Spinning Intro
     implementation 'com.github.ybq:Android-SpinKit:1.2.0'
     implementation 'de.hdodenhof:circleimageview:3.0.0'

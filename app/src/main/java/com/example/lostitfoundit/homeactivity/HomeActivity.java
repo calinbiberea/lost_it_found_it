@@ -1,4 +1,4 @@
-package com.example.lostitfoundit;
+package com.example.lostitfoundit.homeactivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.lostitfoundit.ContactMeActivity;
+import com.example.lostitfoundit.LoginActivity;
+import com.example.lostitfoundit.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 

@@ -1,4 +1,4 @@
-package com.example.lostitfoundit;
+package com.example.lostitfoundit.homeactivity;
 
 
 import android.content.Intent;
@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.lostitfoundit.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
