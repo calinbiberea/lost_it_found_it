@@ -43,4 +43,5 @@
     <string name="time_it_was_lost">Time It Was Lost</string>
     <string name="where_it_was_lost">Where It Was Lost</string>
     <string name="short_description">Short Description</string>
+    <string name="lost_item_time">Lost Item Time</string>
 </resources>
